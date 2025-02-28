@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="./dygraph.js"></script>
+    <script type="text/javascript" src="./synchronizer.js"></script>
+  </head>
+  <body>
+    <div id="div_g" style="width:100%; height:300px;"></div>
+    <div id="div_s0" style="width:100%; height:30px;"></div>
+    <div id="div_s1" style="width:100%; height:30px;"></div>
+    <div id="div_s2" style="width:100%; height:30px;"></div>
+    <div id="div_s3" style="width:100%; height:30px;"></div>
+    <div id="div_s4" style="width:100%; height:30px;"></div>
+    <div id="div_s5" style="width:100%; height:30px;"></div>
+    <div id="div_s6" style="width:100%; height:30px;"></div>
+    <div id="div_s7" style="width:100%; height:30px;"></div>
+    <div id="div_s8" style="width:100%; height:30px;"></div>
+    <div id="div_s9" style="width:100%; height:30px;"></div>
+    <div id="div_s10" style="width:100%; height:30px;"></div>
+    <div id="div_s11" style="width:100%; height:30px;"></div>
+    <div id="div_s12" style="width:100%; height:30px;"></div>
+    <div id="div_s13" style="width:100%; height:30px;"></div>
+    <div id="div_s14" style="width:100%; height:30px;"></div>
+    <div id="div_s15" style="width:100%; height:30px;"></div>
+    <div id="div_s16" style="width:100%; height:30px;"></div>
+    <div id="div_s17" style="width:100%; height:30px;"></div>
+    <div id="div_s18" style="width:100%; height:30px;"></div>
+    <div id="div_s19" style="width:100%; height:30px;"></div>
+    <div id="div_s20" style="width:100%; height:30px;"></div>
+
+    <table id="tabbl"> </table>
+
+  <script type="text/javascript">
+    var max = 15000;
+    Dygraph.onDOMready(function onDOMready() {
+      var data = [];
+      var t = new Date();
+      for (var i = max; i >= 0; i--) {
+        var x = new Date(t.getTime() - i * 1000);
+        data.push([x, Math.random()]);
+      }
+
+      var max_bin = 18;
+      var data_bin = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]];
+      
+      for (var c = 0; c < max_bin; c++) {
+        t = new Date();
+        for (var i = max/2; i >= 0; i--) {
+          var x = new Date(t.getTime() - i * 2000);
+          data_bin[c].push([x, Math.floor(Math.random()*2)]);
+        }
+      }
+      var graphs = [];
+
+      graphs.push( 
+        new Dygraph(
+            document.getElementById("div_g"),
+            data, {
+            resizable: "both",
+            fillGraph: true,
+            labelsSeparateLines: true,
+            yAxisLabelWidth: 20,
+            labels: ['Time', 'Random']
+            }
+          )
+      );
+
+      for (let index = 0; index < max_bin; index++) {
+        console.log("div_s"+index.toString());
+        graphs.push( 
+          new Dygraph(
+              document.getElementById("div_s"+index.toString()),
+              data_bin[index], 
+              {
+                axes: { x: { drawAxis: false }, y: { } },
+                resizable: "both",
+                fillGraph: true,
+                stepPlot: true
+              }
+            )
+        );
+      }
+      var sync = Dygraph.synchronize(graphs, { zoom: true, selection: true });
+    });
+    </script>
+  </body>
+</html>
+
